@@ -253,7 +253,7 @@ WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%2
         const msg = encodeURIComponent(`مرحباً ماربي! أريد استفسار عن المنتج: ${p.name} (الرمز ${p.id})`);
         wa.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${msg}`;
         wa.target = '_blank'; wa.rel='noopener'; wa.textContent='واتساب';
-        const fb = document.createElement('a'); fb.className='btn btn--fb'; fb.href = CONFIG.facebookUrl; fb.target='_blank'; fb.rel='noopener'; fb.textContent='شاهد';
+        const fb = document.createElement('a'); fb.className='btn btn--fb'; fb.href = CONFIG.facebookUrl; fb.target='_blank'; fb.rel='noopener'; fb.textContent='المزيد';
         actions.appendChild(wa); actions.appendChild(fb);
 
         meta.appendChild(price); meta.appendChild(actions);
