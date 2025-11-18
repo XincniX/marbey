@@ -3,7 +3,7 @@
     "id": "P001",
     "name": "حذاء كعب عالي كلاسيكي",
     "price": 249.00,
-    "currency": "SAR",
+    "currency": "ج.م",
     "image": "products/heel-classic.jpg",
     "category": "footwear",
     "highlight": true
@@ -12,7 +12,7 @@
     "id": "P002",
     "name": "سنيكرز نسائي مريح",
     "price": 199.00,
-    "currency": "SAR",
+    "currency": "ج.م",
     "image": "products/sneakers-comfy.jpg",
     "category": "footwear",
     "highlight": false
@@ -21,7 +21,7 @@
     "id": "P003",
     "name": "شنطة يد جلدية",
     "price": 179.00,
-    "currency": "SAR",
+    "currency": "ج.م",
     "image": "products/leather-bag.jpg",
     "category": "bags",
     "highlight": true
