@@ -4,7 +4,7 @@
     "name": "حذاء كعب عالي كلاسيكي",
     "price": 249.00,
     "currency": "SAR",
-    "image": "products/images/heel-classic.jpg",
+    "image": "products/heel-classic.jpg",
     "category": "footwear",
     "highlight": true
   },
@@ -13,7 +13,7 @@
     "name": "سنيكرز نسائي مريح",
     "price": 199.00,
     "currency": "SAR",
-    "image": "products/images/sneakers-comfy.jpg",
+    "image": "products/sneakers-comfy.jpg",
     "category": "footwear",
     "highlight": false
   },
@@ -22,7 +22,7 @@
     "name": "شنطة يد جلدية",
     "price": 179.00,
     "currency": "SAR",
-    "image": "products/images/leather-bag.jpg",
+    "image": "products/leather-bag.jpg",
     "category": "bags",
     "highlight": true
   }
