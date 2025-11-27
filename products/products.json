@@ -1,29 +1,23 @@
 [
   {
-    "id": "P001",
-    "name": "حذاء كعب عالي كلاسيكي",
-    "price": 249.00,
-    "currency": "ج.م",
-    "image": "products/heel-classic.jpg",
-    "category": "footwear",
-    "highlight": true
+    "ItemNumber": "268679823",
+    "ItemName": "بوت حريمي شمواه بيج",
+    "ItemPrice": 400.0,
+    "ItemCategory": "احذية",
+    "ItemImage": "268679823.jpg"
   },
   {
-    "id": "P002",
-    "name": "سنيكرز نسائي مريح",
-    "price": 199.00,
-    "currency": "ج.م",
-    "image": "products/sneakers-comfy.jpg",
-    "category": "footwear",
-    "highlight": false
+    "ItemNumber": "12312312",
+    "ItemName": "حذاء رياضي اديداس",
+    "ItemPrice": 600.0,
+    "ItemCategory": "اكسسوارات",
+    "ItemImage": "12312312.jpg"
   },
   {
-    "id": "P003",
-    "name": "شنطة يد جلدية",
-    "price": 179.00,
-    "currency": "ج.م",
-    "image": "products/leather-bag.jpg",
-    "category": "bags",
-    "highlight": true
+    "ItemNumber": "524534",
+    "ItemName": "شنطه جلد حمراء",
+    "ItemPrice": 555.0,
+    "ItemCategory": "شنط",
+    "ItemImage": "524534.jpg"
   }
 ]
