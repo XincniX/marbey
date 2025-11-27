@@ -10,170 +10,412 @@ How the product folder works:
     {
       "ItemNumber": "p001",
       "ItemName": "High Heel Elegant",
-      "price": 249.00,
-      "currency": "SAR",
-      "ItemImage": "images/high-heel.jpg",
+      "ItemPrice": 249.00,
       "ItemCategory": "footwear",
-      "highlight": true
-    },
-    ...
+      "ItemImage": "p001.jpg"
+    }
   ]
-- Keep images inside `products/images/` and reference them by relative path.
-- When you update products.json or add images, GitHub Pages will serve the new files.
 
-Publishing tip:
-- Create a GitHub repository, push this index.html plus the `products/` folder and `assets/` (logo) to the repo.
-- Enable GitHub Pages on the repository (Settings -> Pages -> branch main -> / (root)).
-
-Replace the placeholders below (ADDRESS, FACEBOOK_URL, WHATSAPP_NUMBER) with your real details.
-WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%20I%20want%20info
-(Example for Egypt: 201234567890 -> https://wa.me/201234567890)
+Images:
+- Place all product images inside `products/` (same level as products.json)
+- The "ItemImage" property must exactly match the image file name.
 -->
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marbey - أحذية وشنط نسائية</title>
+  <meta charset="UTF-8" />
+  <title>ماربي للاحذية والشنط</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root{
-      --accent:#d22e2e; /*  red */
-      --dark:#1f1f23;
-      --muted:#6b6b6b;
-      --card-bg: linear-gradient(135deg,#a6302b 0%, #2a2a2a 100%);
-      --radius:18px;
-      font-family: 'Segoe UI', Tahoma, system-ui, -apple-system, 'Noto Nastaliq Urdu', 'Noto Kufi Arabic', Arial, sans-serif;
+      --bg:#f5f5f7;
+      --card:#ffffff;
+      --accent:#d7263d;
+      --text:#222;
+      --muted:#666;
+      --radius:16px;
+      --shadow:0 14px 30px rgba(15,23,42,.12);
+      --border:#e2e8f0;
+      --pill:#f1f5f9;
+      --pill-border:#e2e8f0;
+      --chip-bg:#f97316;
+      --chip-text:#fff;
+      --chip-muted:#475569
     }
-    *{box-sizing:border-box}
-    body{margin:0; background: #f6f6f7; color:#111;}
-    .container{max-width:1100px;margin:28px auto;padding:20px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#fef3c7,#f5f5f7 55%);
+      min-height:100vh;
+      color:var(--text);
+      padding:16px
+    }
+    .page{
+      max-width:1200px;
+      margin:0 auto;
+      background:rgba(255,255,255,0.9);
+      backdrop-filter:blur(16px);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:0 24px 60px rgba(15,23,42,.18);
+      border:1px solid rgba(148,163,184,.25)
+    }
 
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:120px;height:120px;border-radius:28px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.15);background:var(--card-bg);display:flex;align-items:center;justify-content:center}
-    .logo img{width:95%;height:95%;object-fit:contain;display:block}
-    .brand h1{margin:0;font-size:28px;color:var(--accent);letter-spacing:1px}
-    .tag{color:#fff;background:rgba(255,255,255,0.06);padding:6px 10px;border-radius:10px;font-weight:600}
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+    .brand-logo{
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      overflow:hidden;
+      box-shadow:0 10px 25px rgba(15,23,42,.35);
+      border:3px solid #fff;
+      flex-shrink:0
+    }
+    .brand-logo img{width:100%;height:100%;object-fit:cover}
+    .brand-text h1{
+      font-size:1.35rem;
+      font-weight:800;
+      letter-spacing:.02em;
+      color:#111827
+    }
+    .brand-text p{
+      font-size:.82rem;
+      color:var(--muted)
+    }
 
-    /* Contact */
-    .contacts{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-    .contacts a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:12px;text-decoration:none;color:var(--dark);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-    .contacts a .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+    .contact{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-end;
+      min-width:220px
+    }
+    .contact-line{
+      font-size:.82rem;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:flex-end
+    }
+    .contact-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--pill);
+      border:1px solid var(--pill-border);
+      font-size:.8rem;
+      color:#0f172a;
+      text-decoration:none;
+      font-weight:500;
+      box-shadow:0 6px 16px rgba(15,23,42,.12)
+    }
+    .pill span.icon{
+      font-size:1rem
+    }
+    .pill.primary{
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      border-color:transparent;
+      color:#f0fdf4
+    }
+    .pill.primary span.icon{
+      background:rgba(15,23,42,.25);
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center
+    }
 
-    /* Products */
-    .section{margin-top:20px}
-    .section h2{margin:0 0 12px 0;color:var(--dark)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-    .card{background:#fff;border-radius:14px;padding:12px;box-shadow:0 8px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;align-items:stretch}
-    .card img{width:100%;height:200px;object-fit:cover;border-radius:10px}
-    .meta{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .name{font-weight:700;color:#222}
-    .price{font-weight:800;color:var(--accent)}
-    .btn{display:inline-block;padding:8px 10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:700}
-    .btn--chat{background:linear-gradient(90deg,var(--accent),#b12b2b);color:#fff}
-    .btn--fb{background:#1877f2;color:#fff}
+    .filters-bar{
+      margin-bottom:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between
+    }
+    .filters-bar h2{
+      font-size:1rem;
+      font-weight:700;
+      color:#111827
+    }
+    .filter-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end
+    }
+    .chip{
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px dashed #e5e7eb;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:rgba(248,250,252,.9);
+      color:var(--chip-muted);
+      transition:.15s ease-in-out;
+      user-select:none
+    }
+    .chip span.bullet{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background-color:#cbd5f5
+    }
+    .chip.active{
+      background:linear-gradient(135deg,#f97316,#fb923c);
+      border-color:transparent;
+      color:var(--chip-text);
+      box-shadow:0 10px 25px rgba(248,113,113,.35)
+    }
+    .chip.active span.bullet{
+      background:#fefce8
+    }
 
-    /* Footer */
-    footer{margin-top:28px;padding:18px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#fafafa);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    main{
+      background:linear-gradient(145deg,#f9fafb,#e5e7eb);
+      border-radius:20px;
+      padding:16px;
+      border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 16px 40px rgba(15,23,42,.12)
+    }
 
-    /* small screens */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+      gap:14px
+    }
+
+    .card{
+      background:#fff;
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 10px 24px rgba(15,23,42,.10);
+      border:1px solid #e5e7eb;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:stretch
+    }
+    .card img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+      border-radius:10px
+    }
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px
+    }
+    .name{
+      font-weight:700;
+      color:#222
+    }
+    .price{
+      font-weight:800;
+      color:var(--accent)
+    }
+    .btn{
+      display:inline-block;
+      padding:8px 10px;
+      border-radius:10px;
+      text-align:center;
+      text-decoration:none;
+      font-weight:700
+    }
+    .btn--chat{
+      background:linear-gradient(90deg,var(--accent),#b12b2b);
+      color:#fff
+    }
+    .btn--fb{
+      background:#1877f2;
+      color:#fff
+    }
+    .card-actions{
+      display:flex;
+      flex-direction:column;
+      gap:6px
+    }
+
+    footer{
+      margin-top:28px;
+      padding:18px;
+      border-radius:12px;
+      background:linear-gradient(120deg,#0f172a,#1e293b);
+      color:#e5e7eb;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px
+    }
+    footer a{
+      color:#bfdbfe;
+      text-decoration:none;
+      font-weight:600
+    }
+
     @media(max-width:720px){
-      header{flex-direction:column;align-items:flex-start}
-      .contacts{width:100%}
-      .logo{width:96px;height:96px;border-radius:16px}
+      header{
+        flex-direction:column;
+        align-items:flex-start
+      }
+      .contact{
+        align-items:flex-start
+      }
+      .filters-bar{
+        flex-direction:column;
+        align-items:flex-start
+      }
+      .chip{
+        font-size:.78rem
+      }
+      footer{
+        flex-direction:column;
+        align-items:flex-start
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="page">
     <header>
       <div class="brand">
-        <div class="logo" id="logoWrap">
-          <!-- Replace assets/logo-rounded.png with your rounded logo file in /assets/ -->
-          <img src="assets/logo-rounded.png" alt=" logo" id="logoImg">
+        <div class="brand-logo">
+          <img src="assets/logo-rounded.png" alt="ماربي للاحذية والشنط" />
         </div>
-        <div>
-          <h1>ماربي للأزياء النسائية</h1>
-          <div class="tag">لمسة أناقة في كل خطوة</div>
+        <div class="brand-text">
+          <h1>ماربي للاحذية والشنط</h1>
+          <p>أحدث موديلات الاحذية والشنط الحريمي</p>
         </div>
       </div>
-
-      <div class="contacts">
-        <!-- Replace placeholders below with real data -->
-        <a href="https://maps.app.goo.gl/Dq2D58roEUA5ocjSA" target="_blank" rel="noopener">
-          <span class="dot"></span>
-          العنوان: <strong id="addressText">ADDRESS_PLACEHOLDER</strong>
-        </a>
-
-        <a id="facebookLink" href="FACEBOOK_URL_PLACEHOLDER" target="_blank" rel="noopener">
-          <span style="font-weight:700">f</span> صفحة الفيسبوك
-        </a>
-
-        <a id="whatsappLink" href="https://wa.me/WHATSAPP_NUMBER_PLACEHOLDER?text=مرحباً%20ماربي%20انا%20مهتم%20بمنتجكم" target="_blank" rel="noopener">
-          <span style="font-weight:700">💬</span> تواصل عبر واتساب
-        </a>
+      <div class="contact">
+        <div class="contact-line">
+          <span id="addressText"></span>
+          <span class="icon">📍</span>
+        </div>
+        <div class="contact-actions">
+          <a id="whatsappLink" class="pill primary" href="#">
+            <span class="icon">💬</span>
+            <span>تواصل واتساب</span>
+          </a>
+          <a id="facebookLink" class="pill" href="#" target="_blank" rel="noopener">
+            <span class="icon">📘</span>
+            <span>صفحة الفيسبوك</span>
+          </a>
+        </div>
       </div>
     </header>
 
-    <main>
-      <section class="section">
-        <h2>الأكثر مبيعاً</h2>
-        <div id="productsGrid" class="grid">
-          <!-- products injected here -->
-        </div>
-      </section>
+    <section class="filters-bar">
+      <h2>أحدث الموديلات المتاحة في المعرض الآن</h2>
+      <div class="filter-chips">
+        <div class="chip active"><span class="bullet"></span><span>كل المنتجات</span></div>
+      </div>
+    </section>
 
-      <section class="section">
-        <h2>تواصل سريع</h2>
-        <p>هل تريد مساعدة سريعة؟ اضغط على أيقونة الواتساب للتواصل المباشر.</p>
-        <div style="display:flex;gap:12px">
-          <a id="chatBtn" class="btn btn--chat" href="#">راسـلنا الآن</a>
-          <a id="fbBtn" class="btn btn--fb" href="#">شاهد صفحتنا على فيسبوك</a>
-        </div>
-      </section>
+    <main>
+      <div id="productsGrid" class="grid">
+        <!-- Products from JSON -->
+      </div>
     </main>
 
     <footer>
-      <div>© <strong>MARBEY</strong> - كل الحقوق محفوظة</div>
-      <div style="color:var(--muted)">تصميم الموقع تجريبي و تحت الانشاء</div>
+      <div>للاستعلام والطلب تواصل معنا على الواتساب أو من خلال صفحة الفيسبوك.</div>
+      <div>
+        <a id="chatBtn" href="#">تشات واتساب</a>
+        &nbsp;|&nbsp;
+        <a id="fbBtn" href="#" target="_blank" rel="noopener">صفحة فيسبوك</a>
+      </div>
     </footer>
   </div>
 
   <script>
-    /* CONFIG - replace these with your real values or update them in the HTML before publishing */
+    // --- BASIC CONFIG ---
     const CONFIG = {
       address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
       facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
-      whatsappNumber: '201005014540', // full international no (no + or leading zeros). Example Egypt: 201234567890
+      // full international no (no + or leading zeros). Example Egypt: 201234567890
+      whatsappNumber: '201005014540',
       whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.'
     };
 
-    // wire up contact links
+    // Wire up contact links
     document.getElementById('addressText').textContent = CONFIG.address;
     document.getElementById('facebookLink').href = CONFIG.facebookUrl;
 
     function makeWhatsAppLink(number, text){
       const encoded = encodeURIComponent(text || '');
-      return `https://wa.me/${number}${text?`?text=${encoded}`:''}`;
+      return `https://wa.me/${number}${text ? `?text=${encoded}` : ''}`;
     }
+
     const waLink = makeWhatsAppLink(CONFIG.whatsappNumber, CONFIG.whatsappPresetText);
     document.getElementById('whatsappLink').href = waLink;
     document.getElementById('chatBtn').href = waLink;
     document.getElementById('fbBtn').href = CONFIG.facebookUrl;
 
-    // Load products.json from products/products.json
-    // Example structure of each product:
-    // { id, name, price, currency, image, category, highlight }
+    // ---------- PRODUCTS LOADING ----------
+
+    // NOTE:
+    // products.json is now inside /products folder:
+    //   /products/products.json
+    //
+    // Your JSON uses keys: ItemNumber, ItemName, ItemPrice, ItemCategory, ItemImage
+    // The site internally uses: id, name, price, currency, image, category, highlight
+    // So we normalise the objects after loading.
+
     async function loadProducts(){
       try{
-        const res = await fetch('products/products.json', {cache: 'no-cache'});
+        const res = await fetch('products/products.json', { cache: 'no-cache' });
         if(!res.ok) throw new Error('Products file not found');
-        const products = await res.json();
+
+        const rawProducts = await res.json();
+
+        const products = rawProducts.map((p, index) => ({
+          id: p.id || p.ItemNumber || `P${index + 1}`,
+          name: p.name || p.ItemName || '',
+          price: (p.price ?? p.ItemPrice) ?? 0,
+          currency: p.currency || p.ItemCurrency || 'SAR',
+          // images are stored in /products folder next to products.json
+          image: p.image || (p.ItemImage ? `products/${p.ItemImage}` : 'assets/logo-rounded.png'),
+          category: p.category || p.ItemCategory || '',
+          highlight: Number(p.highlight || 0)
+        }));
+
         renderProducts(products);
       }catch(err){
-        document.getElementById('productsGrid').innerHTML = '<div style="padding:18px;background:#fff;border-radius:12px">لا توجد منتجات حالياً. تأكد من رفع ملف <code>products/products.json</code> الى المستودع.</div>';
+        document.getElementById('productsGrid').innerHTML =
+          '<div style="background:#fff3cd;border:1px solid #ffeeba;padding:12px;border-radius:10px;text-align:right;font-size:14px;">' +
+          'تعذّر تحميل المنتجات. تأكد من رفع ملف <code>products/products.json</code> وصور المنتجات داخل مجلد <code>products</code>.' +
+          '</div>';
         console.error(err);
       }
     }
@@ -182,7 +424,7 @@ WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%2
       const grid = document.getElementById('productsGrid');
       grid.innerHTML = '';
 
-      // create a reusable lightbox element if it doesn't exist
+      // --- Create / reuse lightbox element ---
       let lightbox = document.getElementById('marbey-lightbox');
       if(!lightbox){
         lightbox = document.createElement('div');
@@ -197,7 +439,7 @@ WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%2
         lightbox.innerHTML = `
           <div id="marbey-lightbox-inner" style="max-width:90%;max-height:90%;padding:12px;border-radius:10px;">
             <img id="marbey-lightbox-img" src="" alt="" style="max-width:100%;max-height:100%;display:block;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.6)">
-            <button id="marbey-lightbox-close" style="position:absolute;top:18px;right:22px;background:transparent;border:0;font-size:32px;color:#fff;cursor:pointer">&times;</button>
+            <button id="marbey-lightbox-close" style="position:absolute;top:16px;right:24px;background:transparent;border:0;font-size:32px;color:#fff;cursor:pointer">&times;</button>
           </div>
         `;
         document.body.appendChild(lightbox);
@@ -212,24 +454,31 @@ WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%2
         window.addEventListener('keydown', (e)=>{
           if(e.key === 'Escape'){
             lightbox.style.display = 'none';
-            const lbimg = document.getElementById('marbey-lightbox-img'); if(lbimg) lbimg.src='';
+            const lbimg = document.getElementById('marbey-lightbox-img');
+            if(lbimg) lbimg.src = '';
           }
         });
       }
 
+      const fallbackImage = 'assets/logo-rounded.png';
+
       // sort: highlights first then by name
       products.sort((a,b)=> (b.highlight - a.highlight) || a.name.localeCompare(b.name));
+
       for(const p of products){
-        const card = document.createElement('div'); card.className='card';
+        const card = document.createElement('div');
+        card.className = 'card';
 
         // Clickable full-size image (wrap in <a> to allow right-click -> open image in new tab)
         const imgLink = document.createElement('a');
-        imgLink.href = p.image || 'assets/placeholder.png';
-        imgLink.target = "_blank";
-        imgLink.rel = "noopener";
+        imgLink.href = p.image || fallbackImage;
+        imgLink.target = '_blank';
+        imgLink.rel = 'noopener';
         imgLink.style.display = 'block';
 
-        const img = document.createElement('img'); img.alt = p.name; img.src = p.image || 'assets/placeholder.png';
+        const img = document.createElement('img');
+        img.alt = p.name || '';
+        img.src = p.image || fallbackImage;
         img.style.cursor = 'zoom-in';
         imgLink.appendChild(img);
 
@@ -239,25 +488,50 @@ WhatsApp link format: https://wa.me/COUNTRYCODEPHONENUMBER?text=Hello%20Marbey%2
           const lb = document.getElementById('marbey-lightbox');
           const lbimg = document.getElementById('marbey-lightbox-img');
           if(lb && lbimg){
-            lbimg.src = p.image || 'assets/placeholder.png';
-            lbimg.alt = p.name;
+            lbimg.src = img.src;
             lb.style.display = 'flex';
           }
         });
 
-        const name = document.createElement('div'); name.className='name'; name.textContent = p.name;
-        const meta = document.createElement('div'); meta.className='meta';
-        const price = document.createElement('div'); price.className='price'; price.textContent = `${p.currency||'SAR'} ${Number(p.price).toFixed(2)}`;
+        const name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = p.name || '';
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+
+        const price = document.createElement('div');
+        price.className = 'price';
+        price.textContent = `${p.price.toFixed(0)} ${p.currency || ''}`;
+
         const actions = document.createElement('div');
-        const wa = document.createElement('a'); wa.className='btn btn--chat';
+        actions.className = 'card-actions';
+
+        const wa = document.createElement('a');
+        wa.className = 'btn btn--chat';
         const msg = encodeURIComponent(`مرحباً ماربي! أريد استفسار عن المنتج: ${p.name} (الرمز ${p.id})`);
         wa.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${msg}`;
-        wa.target = '_blank'; wa.rel='noopener'; wa.textContent='واتساب';
-        const fb = document.createElement('a'); fb.className='btn btn--fb'; fb.href = CONFIG.facebookUrl; fb.target='_blank'; fb.rel='noopener'; fb.textContent='المزيد';
-        actions.appendChild(wa); actions.appendChild(fb);
+        wa.target = '_blank';
+        wa.rel = 'noopener';
+        wa.textContent = 'واتساب';
 
-        meta.appendChild(price); meta.appendChild(actions);
-        card.appendChild(imgLink); card.appendChild(name); card.appendChild(meta);
+        const fb = document.createElement('a');
+        fb.className = 'btn btn--fb';
+        fb.href = CONFIG.facebookUrl;
+        fb.target = '_blank';
+        fb.rel = 'noopener';
+        fb.textContent = 'المزيد';
+
+        actions.appendChild(wa);
+        actions.appendChild(fb);
+
+        meta.appendChild(price);
+        meta.appendChild(actions);
+
+        card.appendChild(imgLink);
+        card.appendChild(name);
+        card.appendChild(meta);
+
         grid.appendChild(card);
       }
     }
