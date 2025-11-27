@@ -403,7 +403,7 @@ Images:
           id: p.id || p.ItemNumber || `P${index + 1}`,
           name: p.name || p.ItemName || '',
           price: (p.price ?? p.ItemPrice) ?? 0,
-          currency: p.currency || p.ItemCurrency || 'SAR',
+          currency: p.currency || p.ItemCurrency || 'ج.م',
           // images are stored in /products folder next to products.json
           image: p.image || (p.ItemImage ? `products/${p.ItemImage}` : 'assets/logo-rounded.png'),
           category: p.category || p.ItemCategory || '',
