@@ -1,3 +1,26 @@
+<!--
+Marbey - Single-file website (HTML/CSS/JS)
+Place this file in your GitHub repository as `index.html`.
+
+How the product folder works:
+- Create a folder named `products/` at the repo root.
+- Inside `products/` create `products.json` and an `images/` folder.
+- products.json must be an array of product objects like:
+  [
+    {
+      "ItemNumber": "p001",
+      "ItemName": "High Heel Elegant",
+      "ItemPrice": 249.00,
+      "ItemCategory": "footwear",
+      "ItemImage": "p001.jpg"
+    }
+  ]
+
+Images:
+- Place all product images inside `products/` (same level as products.json)
+- The "ItemImage" property must exactly match the image file name.
+-->
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -87,6 +110,21 @@
       align-items:center;
       gap:8px;
       justify-content:flex-end
+    }
+    .address-list{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      text-align:right;
+      gap:4px;
+    }
+    .address-link{
+      font-size:.82rem;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .address-link:hover{
+      text-decoration:underline;
     }
     .contact-actions{
       display:flex;
@@ -260,19 +298,6 @@
       font-weight:600
     }
 
-    .branch-label{
-      font-weight:600;
-      color:#334155;
-    }
-
-    .address-link{
-      text-decoration:none;
-      color:inherit;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
     @media(max-width:720px){
       header{
         flex-direction:column;
@@ -308,30 +333,10 @@
         </div>
       </div>
       <div class="contact">
-        <!-- الفرع الرئيسي -->
         <div class="contact-line">
-          <a id="mainAddressLink" class="address-link" href="#" target="_blank" rel="noopener">
-            <span id="addressText"></span>
-            <span class="icon">📍</span>
-          </a>
+          <div id="addresses" class="address-list"></div>
+          <span class="icon">📍</span>
         </div>
-        <!-- الفرع الثاني -->
-        <div class="contact-line">
-          <a id="branch2Link" class="address-link" href="#" target="_blank" rel="noopener">
-            <span class="branch-label">الفرع الثاني:</span>
-            <span id="branch2Text"></span>
-            <span class="icon">📍</span>
-          </a>
-        </div>
-        <!-- الفرع الثالث -->
-        <div class="contact-line">
-          <a id="branch3Link" class="address-link" href="#" target="_blank" rel="noopener">
-            <span class="branch-label">الفرع الثالث:</span>
-            <span id="branch3Text"></span>
-            <span class="icon">📍</span>
-          </a>
-        </div>
-
         <div class="contact-actions">
           <a id="whatsappLink" class="pill primary" href="#">
             <span class="icon">💬</span>
@@ -371,36 +376,49 @@
   <script>
     // --- BASIC CONFIG ---
     const CONFIG = {
-      mainBranch: {
-        address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
-        mapUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9'
-      },
-      branch2: {
-        label: 'الفرع الثاني',
-        address: 'فرع الجيزة ناصية شارع سعد زغلول بجوار الدمياطى..داخل محلات سوجو'
-      },
-      branch3: {
-        label: 'الفرع الثالث',
-        address: 'فرع فيصل حسن محمد امام بنك مصر'
-      },
+      branches: [
+        {
+          key: 'main',
+          label: 'الفرع الرئيسي',
+          text: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
+          mapUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9'
+        },
+        {
+          key: 'branch2',
+          label: 'الفرع الثاني',
+          text: 'فرع الجيزة ناصية شارع سعد زغلول بجوار الدمياطى..داخل محلات سوجو',
+          mapUrl:
+            'https://www.google.com/maps/search/?api=1&query=' +
+            encodeURIComponent('فرع الجيزة ناصية شارع سعد زغلول بجوار الدمياطى داخل محلات سوجو')
+        },
+        {
+          key: 'branch3',
+          label: 'الفرع الثالث',
+          text: 'فرع فيصل حسن محمد امام بنك مصر',
+          mapUrl:
+            'https://www.google.com/maps/search/?api=1&query=' +
+            encodeURIComponent('فرع فيصل حسن محمد امام بنك مصر')
+        }
+      ],
       facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
       // full international no (no + or leading zeros). Example Egypt: 201234567890
       whatsappNumber: '201005014540',
       whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.'
     };
 
+    // Wire up address list (3 right-aligned lines, each opens Google Maps)
+    const addressesContainer = document.getElementById('addresses');
+    addressesContainer.innerHTML = CONFIG.branches
+      .map(
+        (b) => `
+        <a href="${b.mapUrl}" target="_blank" rel="noopener" class="address-link">
+          <strong>${b.label}:</strong> ${b.text}
+        </a>
+      `
+      )
+      .join('');
+
     // Wire up contact links
-    document.getElementById('addressText').textContent = CONFIG.mainBranch.address;
-    document.getElementById('mainAddressLink').href = CONFIG.mainBranch.mapUrl;
-
-    document.getElementById('branch2Text').textContent = CONFIG.branch2.address;
-    document.getElementById('branch2Link').href =
-      'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.branch2.address);
-
-    document.getElementById('branch3Text').textContent = CONFIG.branch3.address;
-    document.getElementById('branch3Link').href =
-      'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.branch3.address);
-
     document.getElementById('facebookLink').href = CONFIG.facebookUrl;
 
     function makeWhatsAppLink(number, text){
