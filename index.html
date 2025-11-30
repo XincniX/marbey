@@ -86,8 +86,7 @@
       display:flex;
       align-items:center;
       gap:8px;
-      justify-content:flex-end;
-      cursor:pointer; /* NEW: علشان تبان clickable */
+      justify-content:flex-end
     }
     .contact-actions{
       display:flex;
@@ -261,6 +260,19 @@
       font-weight:600
     }
 
+    .branch-label{
+      font-weight:600;
+      color:#334155;
+    }
+
+    .address-link{
+      text-decoration:none;
+      color:inherit;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
     @media(max-width:720px){
       header{
         flex-direction:column;
@@ -296,11 +308,30 @@
         </div>
       </div>
       <div class="contact">
-        <!-- نفس الـ HTML مع click على السطر كله -->
-        <div class="contact-line" id="addressLine">
-          <span id="addressText"></span>
-          <span class="icon">📍</span>
+        <!-- الفرع الرئيسي -->
+        <div class="contact-line">
+          <a id="mainAddressLink" class="address-link" href="#" target="_blank" rel="noopener">
+            <span id="addressText"></span>
+            <span class="icon">📍</span>
+          </a>
         </div>
+        <!-- الفرع الثاني -->
+        <div class="contact-line">
+          <a id="branch2Link" class="address-link" href="#" target="_blank" rel="noopener">
+            <span class="branch-label">الفرع الثاني:</span>
+            <span id="branch2Text"></span>
+            <span class="icon">📍</span>
+          </a>
+        </div>
+        <!-- الفرع الثالث -->
+        <div class="contact-line">
+          <a id="branch3Link" class="address-link" href="#" target="_blank" rel="noopener">
+            <span class="branch-label">الفرع الثالث:</span>
+            <span id="branch3Text"></span>
+            <span class="icon">📍</span>
+          </a>
+        </div>
+
         <div class="contact-actions">
           <a id="whatsappLink" class="pill primary" href="#">
             <span class="icon">💬</span>
@@ -340,25 +371,37 @@
   <script>
     // --- BASIC CONFIG ---
     const CONFIG = {
-      address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
+      mainBranch: {
+        address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
+        mapUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9'
+      },
+      branch2: {
+        label: 'الفرع الثاني',
+        address: 'فرع الجيزة ناصية شارع سعد زغلول بجوار الدمياطى..داخل محلات سوجو'
+      },
+      branch3: {
+        label: 'الفرع الثالث',
+        address: 'فرع فيصل حسن محمد امام بنك مصر'
+      },
       facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
       // full international no (no + or leading zeros). Example Egypt: 201234567890
       whatsappNumber: '201005014540',
-      whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.',
-      mapUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9' // NEW: لينك جوجل مابس
+      whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.'
     };
 
     // Wire up contact links
-    document.getElementById('addressText').textContent = CONFIG.address;
-    document.getElementById('facebookLink').href = CONFIG.facebookUrl;
+    document.getElementById('addressText').textContent = CONFIG.mainBranch.address;
+    document.getElementById('mainAddressLink').href = CONFIG.mainBranch.mapUrl;
 
-    // NEW: لما تضغط على سطر العنوان يفتح جوجل مابس في تاب جديدة
-    const addressLine = document.getElementById('addressLine');
-    if (addressLine) {
-      addressLine.addEventListener('click', () => {
-        window.open(CONFIG.mapUrl, '_blank');
-      });
-    }
+    document.getElementById('branch2Text').textContent = CONFIG.branch2.address;
+    document.getElementById('branch2Link').href =
+      'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.branch2.address);
+
+    document.getElementById('branch3Text').textContent = CONFIG.branch3.address;
+    document.getElementById('branch3Link').href =
+      'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.branch3.address);
+
+    document.getElementById('facebookLink').href = CONFIG.facebookUrl;
 
     function makeWhatsAppLink(number, text){
       const encoded = encodeURIComponent(text || '');
@@ -372,6 +415,14 @@
 
     // ---------- PRODUCTS LOADING ----------
 
+    // NOTE:
+    // products.json is now inside /products folder:
+    //   /products/products.json
+    //
+    // Your JSON uses keys: ItemNumber, ItemName, ItemPrice, ItemCategory, ItemImage
+    // The site internally uses: id, name, price, currency, image, category, highlight
+    // So we normalise the objects after loading.
+
     async function loadProducts(){
       try{
         const res = await fetch('products/products.json', { cache: 'no-cache' });
@@ -384,6 +435,7 @@
           name: p.name || p.ItemName || '',
           price: (p.price ?? p.ItemPrice) ?? 0,
           currency: p.currency || p.ItemCurrency || 'ج.م',
+          // images are stored in /products folder next to products.json
           image: p.image || (p.ItemImage ? `products/${p.ItemImage}` : 'assets/logo-rounded.png'),
           category: p.category || p.ItemCategory || '',
           highlight: Number(p.highlight || 0)
@@ -448,6 +500,7 @@
         const card = document.createElement('div');
         card.className = 'card';
 
+        // Clickable full-size image (wrap in <a> to allow right-click -> open image in new tab)
         const imgLink = document.createElement('a');
         imgLink.href = p.image || fallbackImage;
         imgLink.target = '_blank';
@@ -460,6 +513,7 @@
         img.style.cursor = 'zoom-in';
         imgLink.appendChild(img);
 
+        // open in lightbox on click (prevent default so user stays on site)
         img.addEventListener('click', (ev)=>{
           ev.preventDefault();
           const lb = document.getElementById('marbey-lightbox');
