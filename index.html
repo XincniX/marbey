@@ -234,13 +234,15 @@ Images:
       justify-content:space-between;
       align-items:center;
       gap:12px
-    } const CONFIG = {
-    address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
-    facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
-    whatsappNumber: '201005014540',
-    whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.',
-    mapsUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9'
-  };
+ <script>
+    // --- BASIC CONFIG ---
+    const CONFIG = {
+      address: 'ماربي للاحذية - شارع العروبة - الهرم جيزة',
+      facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
+      // full international no (no + or leading zeros). Example Egypt: 201234567890
+      whatsappNumber: '201005014540',
+      whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.'
+    };
 
   // Render address as clickable link
   document.getElementById("address").innerHTML = `
