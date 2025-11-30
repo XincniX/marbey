@@ -1,26 +1,3 @@
-<!--
-Marbey - Single-file website (HTML/CSS/JS)
-Place this file in your GitHub repository as `index.html`.
-
-How the product folder works:
-- Create a folder named `products/` at the repo root.
-- Inside `products/` create `products.json` and an `images/` folder.
-- products.json must be an array of product objects like:
-  [
-    {
-      "ItemNumber": "p001",
-      "ItemName": "High Heel Elegant",
-      "ItemPrice": 249.00,
-      "ItemCategory": "footwear",
-      "ItemImage": "p001.jpg"
-    }
-  ]
-
-Images:
-- Place all product images inside `products/` (same level as products.json)
-- The "ItemImage" property must exactly match the image file name.
--->
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -109,7 +86,8 @@ Images:
       display:flex;
       align-items:center;
       gap:8px;
-      justify-content:flex-end
+      justify-content:flex-end;
+      cursor:pointer; /* NEW: علشان تبان clickable */
     }
     .contact-actions{
       display:flex;
@@ -318,7 +296,8 @@ Images:
         </div>
       </div>
       <div class="contact">
-        <div class="contact-line">
+        <!-- نفس الـ HTML مع click على السطر كله -->
+        <div class="contact-line" id="addressLine">
           <span id="addressText"></span>
           <span class="icon">📍</span>
         </div>
@@ -365,12 +344,21 @@ Images:
       facebookUrl: 'https://www.facebook.com/profile.php?id=100063641126576',
       // full international no (no + or leading zeros). Example Egypt: 201234567890
       whatsappNumber: '201005014540',
-      whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.'
+      whatsappPresetText: 'مرحباً ماربي! أريد معلومات عن منتج.',
+      mapUrl: 'https://maps.app.goo.gl/4rHJ2MKj1LrXTkVG9' // NEW: لينك جوجل مابس
     };
 
     // Wire up contact links
     document.getElementById('addressText').textContent = CONFIG.address;
     document.getElementById('facebookLink').href = CONFIG.facebookUrl;
+
+    // NEW: لما تضغط على سطر العنوان يفتح جوجل مابس في تاب جديدة
+    const addressLine = document.getElementById('addressLine');
+    if (addressLine) {
+      addressLine.addEventListener('click', () => {
+        window.open(CONFIG.mapUrl, '_blank');
+      });
+    }
 
     function makeWhatsAppLink(number, text){
       const encoded = encodeURIComponent(text || '');
@@ -384,14 +372,6 @@ Images:
 
     // ---------- PRODUCTS LOADING ----------
 
-    // NOTE:
-    // products.json is now inside /products folder:
-    //   /products/products.json
-    //
-    // Your JSON uses keys: ItemNumber, ItemName, ItemPrice, ItemCategory, ItemImage
-    // The site internally uses: id, name, price, currency, image, category, highlight
-    // So we normalise the objects after loading.
-
     async function loadProducts(){
       try{
         const res = await fetch('products/products.json', { cache: 'no-cache' });
@@ -404,7 +384,6 @@ Images:
           name: p.name || p.ItemName || '',
           price: (p.price ?? p.ItemPrice) ?? 0,
           currency: p.currency || p.ItemCurrency || 'ج.م',
-          // images are stored in /products folder next to products.json
           image: p.image || (p.ItemImage ? `products/${p.ItemImage}` : 'assets/logo-rounded.png'),
           category: p.category || p.ItemCategory || '',
           highlight: Number(p.highlight || 0)
@@ -469,7 +448,6 @@ Images:
         const card = document.createElement('div');
         card.className = 'card';
 
-        // Clickable full-size image (wrap in <a> to allow right-click -> open image in new tab)
         const imgLink = document.createElement('a');
         imgLink.href = p.image || fallbackImage;
         imgLink.target = '_blank';
@@ -482,7 +460,6 @@ Images:
         img.style.cursor = 'zoom-in';
         imgLink.appendChild(img);
 
-        // open in lightbox on click (prevent default so user stays on site)
         img.addEventListener('click', (ev)=>{
           ev.preventDefault();
           const lb = document.getElementById('marbey-lightbox');
